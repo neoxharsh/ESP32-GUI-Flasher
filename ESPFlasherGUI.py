@@ -18,7 +18,8 @@ class ESPToolGUIApp(QtGui.QMainWindow,esptoolGUIUI.Ui_MainWindow):
         self.port = 'COM'
         self.flasSize = '4M'
         self.frozen = 'not'
-
+        print self.bundle_dir
+        print os.name
 
     def selectFile(self,name,obj):
         obj.setText(QtGui.QFileDialog.getOpenFileName(self,name,filter='(*.bin)'))
@@ -77,10 +78,11 @@ class ESPToolGUIApp(QtGui.QMainWindow,esptoolGUIUI.Ui_MainWindow):
         self.lineEditCOMPort.textChanged.connect(self.portSelect)
 
     def erase(self):
+
         if (os.name=='nt'):
             self.process.start(self.bundle_dir+'/esptool.exe --chip esp32 --port {0} --baud {1} erase_flash'.format(self.port,self.baudRate))
         else:
-            self.process.start(self.bundle_dir+'/python esptool.py --chip esp32 --port {0} --baud {1} erase_flash'.format(self.port,self.baudRate))
+            self.process.start('sudo python '+self.bundle_dir+'/esptool.py --chip esp32 --port {0} --baud {1} erase_flash'.format(self.port,self.baudRate))
 
 
     def flash(self):
@@ -91,7 +93,7 @@ class ESPToolGUIApp(QtGui.QMainWindow,esptoolGUIUI.Ui_MainWindow):
                             -z --flash_freq 80m --flash_mod dio --flash_size {2} \
                              0x1000 {3} 0x8000 {4} 0x10000 {5}'.format(self.port,self.baudRate,self.flasSize,self.labelBootloader.text(),self.labelPartition.text(),self.labelApplication.text()))
         else:
-            self.process.start(self.bundle_dir+'/python esptool.py --chip esp32 --port {0} --baud {1}\
+            self.process.start('sudo python '+self.bundle_dir+'/esptool.py --chip esp32 --port {0} --baud {1}\
                             --before default_reset --after hard_reset write_flash\
                             -z --flash_freq 80m --flash_mod dio --flash_size {2} \
                              0x1000 {3} 0x8000 {4} 0x10000 {5}'.format(self.port,self.baudRate,self.flasSize,self.labelBootloader.text(),self.labelPartition.text(),self.labelApplication.text()))
