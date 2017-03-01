@@ -8,6 +8,9 @@ The softawre is extremly to use.
 First Select the Bootloader, Partition and Application file that you wish to flash, then select the appropriate "COM" port or for Linux "/dev/ttyUSB", after that select the baud rate if you wish to change it. Then finally write the Size of your flash memory in the format 
 "4MB". Now you are ready to hit Erase and after that hit flash, after successfull completion the status will show the output, which can also be used to debug any error.
 
+For Linux version, do make sure that you are running the program as sudo, to run it as sudo, navigate to the program directory and enter
+```sudo ./ESPFlasherGUI```
+
 You can use the precompiled executable in the release or use the ESPFlasherGUI.py to run the script directlym, provided you have the following dependency correctly installed.
 
 1. PyQt4
