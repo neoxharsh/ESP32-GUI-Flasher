@@ -12,14 +12,15 @@ class ESPToolGUIApp(QtGui.QMainWindow,esptoolGUIUI.Ui_MainWindow):
             self.bundle_dir = os.path.dirname(os.path.abspath(__file__))
         self.setupUi(self)
         self.setWindowIcon(QtGui.QIcon(self.bundle_dir+'/espLogo.png'))
+        self.memoryESP8266 = ['detect','512KB','256KB','1MB','2MB','4MB','2MB-c1','4MB-c1','4MB-c2']
+        self.memoryESP32 = ['detect','1MB','2MB','4MB','8MB','16MB']
         self.initButtons()
         self.initProcess()
         self.baudRate = 921600
-        self.port = 'COM'
+        self.port = 'COM16'
         self.flasSize = '4M'
         self.frozen = 'not'
-        print self.bundle_dir
-        print os.name
+        self.chip = 'ESP32'
 
     def selectFile(self,name,obj):
         obj.setText(QtGui.QFileDialog.getOpenFileName(self,name,filter='(*.bin)'))
@@ -50,19 +51,27 @@ class ESPToolGUIApp(QtGui.QMainWindow,esptoolGUIUI.Ui_MainWindow):
         self.pushButtonPartition.setDisabled(True)
         self.pushButtonBootloader.setDisabled(True)
         self.pushButtonApplication.setDisabled(True)
-        self.lineEditMemory.setDisabled(True)
-        self.lineEditCOMPort.setDisabled(True)
+        self.comboBoxMemory.setDisabled(True)
+        self.comboBoxCOMPort.setDisabled(True)
         self.comboBoxBaudSelect.setDisabled(True)
 
     def enableButtons(self):
-        self.pushButtonErase.setDisabled(False)
-        self.pushButtonFlash.setDisabled(False)
-        self.pushButtonPartition.setDisabled(False)
-        self.pushButtonBootloader.setDisabled(False)
-        self.pushButtonApplication.setDisabled(False)
-        self.lineEditMemory.setDisabled(False)
-        self.lineEditCOMPort.setDisabled(False)
-        self.comboBoxBaudSelect.setDisabled(False)
+        if (self.chip=='ESP32'):
+            self.pushButtonErase.setDisabled(False)
+            self.pushButtonFlash.setDisabled(False)
+            self.pushButtonPartition.setDisabled(False)
+            self.pushButtonBootloader.setDisabled(False)
+            self.pushButtonApplication.setDisabled(False)
+            self.comboBoxMemory.setDisabled(False)
+            self.comboBoxCOMPort.setDisabled(False)
+            self.comboBoxBaudSelect.setDisabled(False)
+        else:
+            self.pushButtonErase.setDisabled(False)
+            self.pushButtonFlash.setDisabled(False)
+            self.pushButtonBootloader.setDisabled(False)
+            self.comboBoxMemory.setDisabled(False)
+            self.comboBoxCOMPort.setDisabled(False)
+            self.comboBoxBaudSelect.setDisabled(False)
 
     def initButtons(self):
         self.pushButtonBootloader.clicked.connect(lambda: self.selectFile('Select Bootloader File',self.labelBootloader))
@@ -74,29 +83,76 @@ class ESPToolGUIApp(QtGui.QMainWindow,esptoolGUIUI.Ui_MainWindow):
         self.comboBoxBaudSelect.addItems(['921600','512000','256000','230400','115200'])
         self.comboBoxBaudSelect.currentIndexChanged.connect(self.baudSelect)
 
-        self.lineEditMemory.textChanged.connect(self.flashSizeSelect)
-        self.lineEditCOMPort.textChanged.connect(self.portSelect)
+        self.comboBoxChipSelect.addItems(['ESP32','ESP8266'])
+        self.comboBoxChipSelect.currentIndexChanged.connect(self.chipSelect)
+        comPort = []
+        for x in range(1,30):
+            comPort.append('COM'+str(x))
+        self.comboBoxCOMPort.addItems(comPort)
+        self.comboBoxCOMPort.currentIndexChanged.connect(self.comPortSelect)
+        self.comboBoxMemory.addItems(self.memoryESP32)
+        self.comboBoxMemory.currentIndexChanged.connect(self.memorySelect)
+
+
+    def memorySelect(self):
+        self.flasSize = self.comboBoxMemory.currentText()
+
+
+    def comPortSelect(self):
+        self.port = self.comboBoxCOMPort.currentText()
+
+    def chipSelect(self):
+        self.chip = self.comboBoxChipSelect.currentText()
+        if (self.chip=='ESP8266'):
+            self.pushButtonBootloader.setText('Firmware')
+            self.labelBootloader.setText('Firmware')
+            self.pushButtonPartition.setDisabled(True)
+            self.pushButtonApplication.setDisabled(True)
+            self.comboBoxMemory.clear()
+            self.comboBoxMemory.addItems(self.memoryESP8266)
+        else:
+            self.pushButtonBootloader.setText('Bootlader')
+            self.labelBootloader.setText('Bootlader')
+            self.pushButtonPartition.setEnabled(True)
+            self.pushButtonApplication.setEnabled(True)
+            self.comboBoxMemory.clear()
+            self.comboBoxMemory.addItems(self.memoryESP32)
+
 
     def erase(self):
 
         if (os.name=='nt'):
-            self.process.start(self.bundle_dir+'/esptool.exe --chip esp32 --port {0} --baud {1} erase_flash'.format(self.port,self.baudRate))
+            if (self.chip=='ESP32'):
+                self.process.start(self.bundle_dir+'/esptool.exe --chip esp32 --port {0} --baud {1} erase_flash'.format(self.port,self.baudRate))
+            if (self.chip=='ESP8266'):
+                self.process.start(self.bundle_dir+'/esptool.exe --chip esp8266 --port {0} --baud {1} erase_flash'.format(self.port,self.baudRate))
         else:
-            self.process.start('sudo python '+self.bundle_dir+'/esptool.py --chip esp32 --port {0} --baud {1} erase_flash'.format(self.port,self.baudRate))
-
+            if (self.chip=='ESP32'):
+                self.process.start('sudo python '+self.bundle_dir+'/esptool.py --chip esp32 --port {0} --baud {1} erase_flash'.format(self.port,self.baudRate))
+            else:
+                self.process.start('sudo python '+self.bundle_dir+'/esptool.py --chip esp8266 --port {0} --baud {1} erase_flash'.format(self.port,self.baudRate))
 
     def flash(self):
         if (os.name=='nt'):
-
-            self.process.start(self.bundle_dir+'/esptool.exe --chip esp32 --port {0} --baud {1}\
-                            --before default_reset --after hard_reset write_flash\
-                            -z --flash_freq 80m --flash_mod dio --flash_size {2} \
-                             0x1000 {3} 0x8000 {4} 0x10000 {5}'.format(self.port,self.baudRate,self.flasSize,self.labelBootloader.text(),self.labelPartition.text(),self.labelApplication.text()))
+            if (self.chip=='ESP32'):
+                self.process.start(self.bundle_dir+'/esptool.exe --chip esp32 --port {0} --baud {1}\
+                                    --before default_reset --after hard_reset write_flash\
+                                    -z --flash_freq 80m --flash_mod dio --flash_size {2} \
+                                    0x1000 {3} 0x8000 {4} 0x10000 {5}'.format(self.port,self.baudRate,self.flasSize,self.labelBootloader.text(),self.labelPartition.text(),self.labelApplication.text()))
+            else:
+                self.process.start(self.bundle_dir+'/esptool.exe --chip esp8266 --port {0} --baud {1}\
+                                    --before default_reset --after hard_reset write_flash --flash_size={2}\
+                                     0 {3}'.format(self.port,self.baudRate,self.flasSize,self.labelBootloader.text()))
         else:
-            self.process.start('sudo python '+self.bundle_dir+'/esptool.py --chip esp32 --port {0} --baud {1}\
-                            --before default_reset --after hard_reset write_flash\
-                            -z --flash_freq 80m --flash_mod dio --flash_size {2} \
-                             0x1000 {3} 0x8000 {4} 0x10000 {5}'.format(self.port,self.baudRate,self.flasSize,self.labelBootloader.text(),self.labelPartition.text(),self.labelApplication.text()))
+            if (self.chip=='ESP32'):
+                self.process.start('sudo python '+self.bundle_dir+'/esptool.py --chip esp32 --port {0} --baud {1}\
+                                --before default_reset --after hard_reset write_flash\
+                                -z --flash_freq 80m --flash_mod dio --flash_size {2} \
+                                0x1000 {3} 0x8000 {4} 0x10000 {5}'.format(self.port,self.baudRate,self.flasSize,self.labelBootloader.text(),self.labelPartition.text(),self.labelApplication.text()))
+            else:
+                self.process.start('sudo python '+self.bundle_dir+'/esptool.py --chip esp8266 --port {0} --baud {1}\
+                                --before default_reset --after hard_reset write_flash --flash_size={2}\
+                                 0 {3}'.format(self.port,self.baudRate,self.flasSize,self.labelBootloader.text()))
 
 def main():
     app = QtGui.QApplication(sys.argv)
