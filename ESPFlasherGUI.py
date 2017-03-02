@@ -1,5 +1,6 @@
 import sys, os
 import esptoolGUIUI
+import serial.tools.list_ports
 from PyQt4 import QtGui, QtCore
 
 class ESPToolGUIApp(QtGui.QMainWindow,esptoolGUIUI.Ui_MainWindow):
@@ -86,9 +87,13 @@ class ESPToolGUIApp(QtGui.QMainWindow,esptoolGUIUI.Ui_MainWindow):
         self.comboBoxChipSelect.addItems(['ESP32','ESP8266'])
         self.comboBoxChipSelect.currentIndexChanged.connect(self.chipSelect)
         comPort = []
-        for x in range(1,30):
-            comPort.append('COM'+str(x))
+        try:
+            for x in serial.tools.list_ports.comports():
+                comPort.append(str(x.device))
+        except IndexError:
+                pass
         self.comboBoxCOMPort.addItems(comPort)
+        self.comboBoxCOMPort.popupAboutToBeShown.connect(self.comPortClick)
         self.comboBoxCOMPort.currentIndexChanged.connect(self.comPortSelect)
         self.comboBoxMemory.addItems(self.memoryESP32)
         self.comboBoxMemory.currentIndexChanged.connect(self.memorySelect)
@@ -98,7 +103,17 @@ class ESPToolGUIApp(QtGui.QMainWindow,esptoolGUIUI.Ui_MainWindow):
         self.flasSize = self.comboBoxMemory.currentText()
 
 
+    def comPortClick(self):
+        comPort = []
+        try:
+            for x in serial.tools.list_ports.comports():
+                comPort.append(str(x.device))
+        except IndexError:
+                pass
+        self.comboBoxCOMPort.clear()
+        self.comboBoxCOMPort.addItems(comPort)
     def comPortSelect(self):
+
         self.port = self.comboBoxCOMPort.currentText()
 
     def chipSelect(self):

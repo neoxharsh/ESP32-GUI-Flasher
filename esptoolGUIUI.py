@@ -23,6 +23,13 @@ except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
 
+class ComboBoxCOMPORT(QtGui.QComboBox):
+    popupAboutToBeShown = QtCore.pyqtSignal()
+
+    def showPopup(self):
+        self.popupAboutToBeShown.emit()
+        super(ComboBoxCOMPORT, self).showPopup()
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
@@ -79,7 +86,7 @@ class Ui_MainWindow(object):
         self.comboBoxBaudSelect.setObjectName(_fromUtf8("comboBoxBaudSelect"))
         self.horizontalLayout_3.addWidget(self.comboBoxChipSelect)
         self.horizontalLayout_3.addWidget(self.comboBoxBaudSelect)
-        self.comboBoxCOMPort = QtGui.QComboBox(self.verticalLayoutWidget)
+        self.comboBoxCOMPort = ComboBoxCOMPORT(self.verticalLayoutWidget)
         self.comboBoxCOMPort.setObjectName(_fromUtf8("comboBoxCOMPort"))
         self.horizontalLayout_3.addWidget(self.comboBoxCOMPort, QtCore.Qt.AlignHCenter)
         self.comboBoxMemory = QtGui.QComboBox(self.verticalLayoutWidget)
