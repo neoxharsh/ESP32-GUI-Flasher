@@ -26,7 +26,6 @@ class ESPToolGUIApp(QtGui.QMainWindow,esptoolGUIUI.Ui_MainWindow):
     def resizeEvent(self,ev):
         w = int(str(self.geometry()).split("(")[1].split(")")[0].split(",")[2])
         h = int(str(self.geometry()).split("(")[1].split(")")[0].split(",")[3])
-        print w,h
         self.verticalLayoutWidget.resize(w,h)
 
     def selectFile(self,name,obj):
