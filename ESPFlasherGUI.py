@@ -23,6 +23,12 @@ class ESPToolGUIApp(QtGui.QMainWindow,esptoolGUIUI.Ui_MainWindow):
         self.frozen = 'not'
         self.chip = 'ESP32'
 
+    def resizeEvent(self,ev):
+        w = int(str(self.geometry()).split("(")[1].split(")")[0].split(",")[2])
+        h = int(str(self.geometry()).split("(")[1].split(")")[0].split(",")[3])
+        print w,h
+        self.verticalLayoutWidget.resize(w,h)
+
     def selectFile(self,name,obj):
         obj.setText(QtGui.QFileDialog.getOpenFileName(self,name,filter='(*.bin)'))
 

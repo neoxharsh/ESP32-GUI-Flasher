@@ -34,8 +34,8 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.resize(444, 294)
-        MainWindow.setMinimumSize(QtCore.QSize(444, 294))
-        MainWindow.setMaximumSize(QtCore.QSize(444, 294))
+        #MainWindow.setMinimumSize(QtCore.QSize(444, 294))
+        #MainWindow.setMaximumSize(QtCore.QSize(444, 294))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8("espLogo.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
