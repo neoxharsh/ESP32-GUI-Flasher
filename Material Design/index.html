@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello World</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/material.blue-indigo.min.css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script defer src="js/material.min.js"></script>
+    <link href="css/mui.min.css" rel="stylesheet" type="text/css"/>
+    <script src="js/mui.min.js"></script>
+
+    <script src="js/task.js"></script>
+</head>
+<body >
+
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <div class="tite-div" style="-webkit-app-region: drag;">
+        ESP Flasher
+    </div>
+
+    <header class="mdl-layout__header" >
+
+        <div class="mdl-layout__header-row parent-title">
+            <!-- Title -->
+            <span class="current-chip-div mdl-layout-title">ESP32</span>
+            <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" onclick="closeWindow()">
+                <i class="material-icons">close</i>
+            </button>
+            <!-- Add spacer, to align navigation to the right -->
+            <div class="mdl-layout-spacer"></div>
+            <!-- Navigation. We hide it in small screens. -->
+
+        </div>
+    </header>
+    <div class="chipSelectMain mdl-layout__drawer">
+        <span class="mdl-layout-title">Select CHIP</span>
+        <nav class=" mdl-navigation">
+            <a class="chipSelect mdl-navigation__link" href="">ESP8266</a>
+            <a class="chipSelect mdl-navigation__link" href="">ESP32</a>
+        </nav>
+    </div>
+    <main class="mdl-layout__content">
+        <div class="page-content">
+
+
+            <div class="first-div">
+
+                <div class="row">
+                    <label id="bootloaderLable">Bootloader</label>
+                    <button id="bootloaderButton" onclick="bootloaderButtonClicked()"
+                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                        Bootloader
+                    </button>
+                </div>
+                <div class="row">
+                    <label id="partitionLable">Partition</label>
+                    <button id="partitionButton" onclick="partitionButtonClicked()"
+                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                        Partition
+                    </button>
+                </div>
+                <div class="row">
+                    <label id="applicationLable">Application</label>
+                    <button id="applicationButton" onclick="applicationButtonClicked()"
+                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                        Application
+                    </button>
+                </div>
+            </div>
+            <div class="mdl-layout-spacer"></div>
+            <div class="second-div">
+                <div class="mui-dropdown">
+                    <button id="portButton" onclick="portButtonClicked()" class="mui-btn mui-btn--primary" data-mui-toggle="dropdown">
+                        PORT
+                        <span class="mui-caret"></span>
+                    </button>
+                    <ul class="portSelectList mui-dropdown__menu">
+                    </ul>
+                </div>
+                <div class="mui-dropdown">
+                    <button id="baudButton" class="mui-btn mui-btn--primary" data-mui-toggle="dropdown">
+                        Baud
+                        <span class="mui-caret"></span>
+                    </button>
+                    <ul class="baudSelectList mui-dropdown__menu"></ul>
+                </div>
+                <div class="mui-dropdown">
+                    <button id="flashSizeButton" class="mui-btn mui-btn--primary" data-mui-toggle="dropdown">
+                        Flash Size
+                        <span class="mui-caret"></span>
+                    </button>
+                    <ul class="flashSelectList mui-dropdown__menu"></ul>
+                </div>
+
+                <button id="eraseButton" onclick="eraseButtonClicked()"
+                        class=" mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                    Erase
+                </button>
+                <button id="flashButton" onclick="flashButtonClicked()"
+                        class=" mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                    Flash
+                </button>
+
+            </div>
+            <div class="mdl-layout-spacer"></div>
+            <br>
+            <div style="">
+                <div id="outputPanel" class="mui-panel">
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+
+</body>
+</html>

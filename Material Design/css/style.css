@@ -1,0 +1,86 @@
+
+.tite-div{
+    background-color: rgb(33,150,243);
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    font-size: 20px;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    font-weight: 400;
+    color: white;
+    padding: 3%;
+
+    text-align: center;
+}
+div.mdl-layout__header-row{
+    padding: 12px;
+}
+.first-div{
+    #border: solid 2px black;
+
+}
+.first-div .row
+{
+    #border: solid 3px black;
+    display: flex;
+}
+
+.first-div .row label{
+    #border: solid 3px black;
+    width: 100%;
+    padding: 1%;
+    margin: 1%;
+}
+.first-div .row button{
+    width: 50%;
+    margin: 1%;
+}
+.second-div {
+    display: flex;
+    flex-wrap: wrap;
+    #border: solid 3px black;
+}
+.second-div .mui-dropdown{
+    display: flex;
+
+    margin-left: auto;
+    margin-right: auto;
+
+
+}
+.second-div .mui-dropdown button{
+
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
+.second-div button
+{
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+
+}
+.mui-panel
+{
+word-wrap: break-word;
+    width: 94%;
+}
+.mdl-layout__header-row button{
+    position: absolute;
+    left: 560px;
+    top:9px;
+}
+
+.material-icons{
+    -webkit-app-region: no-drag;
+}
+.mdl-layout__drawer-button{
+    -webkit-app-region: no-drag;
+}
+#outputPanel{
+    overflow: scroll;
+    height: 238px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
