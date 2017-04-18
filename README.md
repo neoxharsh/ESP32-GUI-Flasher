@@ -1,6 +1,8 @@
 # ESP32-Flasher-GUI
 A GUI tool to flash firmware to ESP32
 
+# New Update Check Below
+
 This software are for those who are completly new, or maybe for those who are lazy enough to type the whole code.
 
 The software is extremly to use.
@@ -19,3 +21,13 @@ You can use the precompiled executable in the release or use the ESPFlasherGUI.p
 or maybe install esptool using the ```pip install pyserial``` and ```sudo apt install python-qt4``` command. 
 
 The executable have been created using the pyinstaller.
+
+# Material Design Update
+
+The new update is based on material design and uses NodeJS as the backbone, and HTML and CSS as the front end, Electron is used to make it windows friendly. 
+
+The whole app resides in the Material Design directory. You can grab the release if you are lazy, and if u are geeky and worry about spying stuff, go ahead use the source code. You just need to 
+```npm install jquery serial-node ``` and install electron globaly ```npm install -g electron```. This will only work if you have set the path varibale to point to the npm bin directory. Thats it and then from the root of the directory run ```electron .```....
+
+Enjoy the app...
+ 
