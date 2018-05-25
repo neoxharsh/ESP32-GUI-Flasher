@@ -41,7 +41,7 @@ class ESPToolGUIApp(QtGui.QMainWindow,esptoolGUIUI.Ui_MainWindow):
         self.flasSize = self.lineEditMemory.text()
 
     def dataReady(self):
-        self.plainTextEditStatus.appendPlainText(str(self.process.readAllStandardOutput()))
+        self.plainTextEditStatus.appendPlainText(str(self.process.readAllStandardOutput(),encoding='utf-8'))
 
     def initProcess(self):
         self.process = QtCore.QProcess(self)
@@ -140,12 +140,13 @@ class ESPToolGUIApp(QtGui.QMainWindow,esptoolGUIUI.Ui_MainWindow):
 
 
     def erase(self):
-
+        self.comPortSelect()
         if (os.name=='nt'):
             if (self.chip=='ESP32'):
                 self.process.start(self.bundle_dir+'/esptool.exe --chip esp32 --port {0} --baud {1} erase_flash'.format(self.port,self.baudRate))
-            if (self.chip=='ESP8266'):
+            else :
                 self.process.start(self.bundle_dir+'/esptool.exe --chip esp8266 --port {0} --baud {1} erase_flash'.format(self.port,self.baudRate))
+                
         else:
             if (self.chip=='ESP32'):
                 self.process.start('sudo python '+self.bundle_dir+'/esptool.py --chip esp32 --port {0} --baud {1} erase_flash'.format(self.port,self.baudRate))
