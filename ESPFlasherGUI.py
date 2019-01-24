@@ -349,10 +349,13 @@ class ESPToolGUIApp(QtWidgets.QMainWindow,esptoolGUIUI.Ui_MainWindow):
 
     def tick(self):
         if self.ser.is_open == True:
-            s = self.ser.read(512)
-            if len(s) > 0:
-                self.plainTextEditStatus.appendPlainText(s.decode('utf-8'))
-                #print(s.decode('utf-8'))
+            try:
+                s = self.ser.read(512)
+                if len(s) > 0:
+                    self.plainTextEditStatus.appendPlainText(s.decode('utf-8'))
+                    #print(s.decode('utf-8'))
+            except:
+                pass
     def clear_log(self):
         self.port = self.comboBoxCOMPort.currentText()
         self.plainTextEditStatus.clear()
