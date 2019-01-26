@@ -1,6 +1,15 @@
 # ESP32-Flasher-GUI
 A GUI tool to flash firmware to ESP32
 
+# What's News
+esptool 2.6-beta
+Python 3.7.
+PyQt5.
+Fix bugs.
+Flash only bootloader/partiton/firmware or all.
+Send text to serial port.
+Shortcut Keys.
+
 # New Update Check Below
 
 This software are for those who are completly new, or maybe for those who are lazy enough to type the whole code.
@@ -15,10 +24,10 @@ For Linux version, do make sure that you are running the program as sudo, to run
 
 You can use the precompiled executable in the release or use the ESPFlasherGUI.py to run the script directlym, provided you have the following dependency correctly installed.
 
-1. PyQt4
+1. PyQt5
 2. PySerial
 
-or maybe install esptool using the ```pip install pyserial``` and ```sudo apt install python-qt4``` command. 
+or maybe install esptool using the ```pip install pyserial``` and ```sudo apt install python-qt5``` command. 
 
 The executable have been created using the pyinstaller.
 
